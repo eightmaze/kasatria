@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>edited by Idzuan</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+						html, body {
+				height: 100%;
+			}
+
+			body {
+				background-color: #000000;
+				margin: 0;
+				font-family: Helvetica, sans-serif;;
+				overflow: hidden;
+			}
+
+			a {
+				color: #ffffff;
+			}
+
+			#info {
+				position: absolute;
+				width: 100%;
+				color: #ffffff;
+				padding: 5px;
+				font-family: Monospace;
+				font-size: 13px;
+				font-weight: bold;
+				text-align: center;
+				z-index: 1;
+			}
+
+			#menu {
+				position: absolute;
+				bottom: 20px;
+				width: 100%;
+				text-align: center;
+			}
+
+			.element {
+				width: 120px;
+				height: 160px;
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+				border: 1px solid rgba(127,255,255,0.25);
+				text-align: center;
+				cursor: default;
+			}
+
+			.element:hover {
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+				border: 1px solid rgba(127,255,255,0.75);
+			}
+
+				.element .number {
+					position: absolute;
+					top: 20px;
+					right: 20px;
+					font-size: 12px;
+					color: rgba(127,255,255,0.75);
+				}
+
+				.element .symbol {
+					position: absolute;
+					top: 40px;
+					left: 0px;
+					right: 0px;
+					font-size: 60px;
+					font-weight: bold;
+					color: rgba(255,255,255,0.75);
+					text-shadow: 0 0 10px rgba(0,255,255,0.95);
+				}
+
+				.element .details {
+					position: absolute;
+					bottom: 15px;
+					left: 0px;
+					right: 0px;
+					font-size: 12px;
+					color: rgba(127,255,255,0.75);
+				}
+
+			button {
+				color: rgba(127,255,255,0.75);
+				background: transparent;
+				outline: 1px solid rgba(127,255,255,0.75);
+				border: 0px;
+				padding: 5px 10px;
+				cursor: pointer;
+			}
+			button:hover {
+				background-color: rgba(0,255,255,0.5);
+			}
+			button:active {
+				color: #000000;
+				background-color: rgba(0,255,255,0.75);
+			}
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script src="js/tween.min.js"></script>
+		<script src="js/TrackballControls.js"></script>
+		<script src="js/CSS3DRenderer.js"></script>
+
+		<div id="container"></div>
+		<div id="info"><a href="https://www.facebook.com/idzuanariff" target="_blank" rel="noopener">Idzuan Ariff Friends</a> - periodic table. <a href="https://www.linkedin.com/in/idzuanariff/" target="_blank" rel="noopener">profile</a>.</div>
+		<div id="menu">
+			<button id="table">TABLE</button>
+			<button id="sphere">SPHERE</button>
+			<button id="helix">HELIX</button>
+			<button id="grid">GRID</button>
+		</div>
+
+		<script>
+			var table = [
+				"24", "Aina", "female", 1, 1,
+				"23", "Ayin", "female", 18, 1,
+				"23", "Azimy", "male", 1, 2,
+				"23", "Ainul", "female", 2, 2,
+				"25", "Chin", "female", 13, 2,
+				"56", "Amirza", "male", 14, 2,
+				"23", "Hannan", "male", 15, 2,
+				"22", "Zariff", "male", 16, 2,
+				"21", "Husain", "male", 17, 2,
+				"19", "Izzat", "male", 18, 2,
+				"20", "Juny", "female", 1, 3,
+				"26", "Mohamed", "male", 2, 3,
+				"25", "Farah", "female", 13, 3,
+				"25", "Nabila", "female", 14, 3,
+				"24", "Daniela", "female", 15, 3,
+				"25", "Ronaldo", "male", 16, 3,
+				"23", "Nidhzam", "male", 17, 3,
+				"24", "Sheier", "female", 18, 3,
+				"23", "Syazana", "female", 1, 4,
+				"23", "Adiq", "male", 2, 4,
+				"25", "Soon", "male", 3, 4,
+				"26", "Yeehwai", "female", 4, 4,
+				"26", "Yingchau", "female", 5, 4,
+				"23", "Kheng", "male", 6, 4,
+				"23", "Fikri", "male", 7, 4,
+				"23", "Azra", "female", 8, 4,
+				"22", "Hani", "female", 9, 4,
+				"22", "Puteri", "female", 10, 4,
+				"28", "Allis", "male", 11, 4,
+				"27", "Khairul", "male", 12, 4,
+				"26", "Amin", "male", 13, 4,
+				"23", "Umi", "female", 14, 4,
+				"25", "Azman", "male", 15, 4,
+				"24", "Nabilah", "female", 16, 4,
+				"25", "Khairiyyah", "female", 17, 4,
+				"23", "Shakirul", "male", 18, 4,
+				"23", "Ifnee", "male", 1, 5,
+				"23", "Firdaus", "male", 2, 5,
+				"23", "Amirul", "male", 3, 5,
+				"23", "Ashraf", "male", 4, 5,
+				"23", "Najwa", "female", 5, 5,
+				"23", "Aqila", "female", 6, 5,
+				"19", "Aliya", "female", 7, 5,
+				"23", "Farhanah", "female", 8, 5,
+				"24", "Siti", "female", 9, 5,
+				"25", "Fairuz", "male", 10, 5,
+				"18", "Faizul", "male", 11, 5,
+				"18", "Nina", "female", 12, 5,
+				"19", "Amanina", "female", 13, 5,
+				"20", "Hafizah", "female", 14, 5,
+				"21", "Alia", "female", 15, 5,
+				"25", "Liew", "male", 16, 5,
+				"22", "Jasmin", "female", 17, 5,
+				"21", "Amirul", "male", 18, 5,
+				"22", "Akhmal", "male", 1, 6,
+				"23", "Muaz", "male", 2, 6,
+				"24", "Amin", "male", 4, 9,
+				"26", "Iman", "male", 5, 9,
+				"22", "Sarah", "female", 6, 9,
+				"18", "Nadira", "female", 7, 9,
+				"18", "Natasha", "female", 8, 9,
+				"20", "Farahin", "female", 9, 9,
+				"22", "Asiqin", "female", 10, 9,
+				"23", "Nena", "female", 11, 9,
+				"25", "Rafiq", "male", 12, 9,
+				"23", "Ahmad", "male", 13, 9,
+				"23", "Razlee", "male", 14, 9,
+				"24", "Hafiz", "male", 15, 9,
+				"23", "Nur", "female", 16, 9,
+				"22", "Zaqwan", "male", 17, 9,
+				"25", "Fitri", "male", 18, 9,
+				"23", "Hakim", "male", 4, 6,
+				"24", "Faiz", "male", 5, 6,
+				"23", "Nurul", "female", 6, 6,
+				"22", "Hisham", "male", 7, 6,
+				"26", "Fakhrul", "male", 8, 6,
+				"24", "Shah", "male", 9, 6,
+				"23", "Azry", "male", 10, 6,
+				"22", "Hadi", "male", 11, 6,
+				"22", "Fariq", "male", 12, 6,
+				"23", "Adha", "male", 13, 6,
+				"25", "Naddy", "female", 14, 6,
+				"25", "Ummar", "male", 15, 6,
+				"24", "Ramon", "male", 16, 6,
+				"22", "Rafaad", "male", 17, 6,
+				"23", "Emmelynn", "female", 18, 6,
+				"22", "Amal", "female", 1, 7,
+				"21", "Alif", "male", 2, 7,
+				"18", "Zamri", "male", 4, 10,
+				"19", "Bayyinah", "female", 5, 10,
+				"20", "Izzati", "female", 6, 10,
+				"21", "Adlina", "female", 7, 10,
+				"22", "Hanif", "male", 8, 10,
+				"23", "Wasim", "male", 9, 10,
+				"21", "Hazwan", "male", 10, 10,
+				"24", "Syafiq", "male", 11, 10,
+				"25", "Zakira", "female", 12, 10,
+				"24", "Athirah", "female", 13, 10,
+				"22", "Jazz", "male", 14, 10,
+				"23", "Muaz", "male", 15, 10,
+				"23", "Farah", "female", 16, 10,
+				"23", "Syafira", "female", 17, 10,
+				"22", "Lemkova", "female", 18, 10,
+				"21", "Fiqri", "male", 4, 7,
+				"24", "Syafiqa", "female", 5, 7,
+				"26", "Andy", "male", 6, 7,
+				"25", "Asyraf", "male", 7, 7,
+				"27", "Zaim", "male", 8, 7,
+				"23", "Sariah", "female", 9, 7,
+				"25", "Sayuti", "male", 10, 7,
+				"24", "Haslida", "female", 11, 7,
+				"23", "Alia", "female", 12, 7,
+				"21", "Dalilah", "female", 13, 7,
+				"25", "Syahidah", "female", 14, 7,
+				"18", "Apiz", "male", 15, 7,
+				"26", "Aqilah", "female", 16, 7,
+				"31", "Hazmy", "male", 17, 7,
+				"23", "Syahmi", "male", 18, 7
+			];
+			var camera, scene, renderer;
+			var controls;
+			var objects = [];
+			var targets = { table: [], sphere: [], helix: [], grid: [] };
+			init();
+			animate();
+			function init() {
+				camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.z = 3000;
+				scene = new THREE.Scene();
+				// table
+				for ( var i = 0; i < table.length; i += 5 ) {
+					var element = document.createElement( 'div' );
+					element.className = 'element';
+					if ( table [i+2] == "female"){
+						element.style.backgroundColor = 'rgba(238, 0, 79,' + ( Math.random() * 0.5+ 0.25 ) +')';
+					} 	else {
+						element.style.backgroundColor = 'rgba(0, 97, 238,' + ( Math.random() * 0.5+ 0.25 ) +')';
+					}
+
+					var number = document.createElement( 'div' );
+					number.className = 'number';
+					number.textContent = (i/5) + 1;
+					element.appendChild( number );
+
+					var symbol = document.createElement( 'div' );
+					symbol.className = 'symbol';
+					symbol.textContent = table[ i ];
+					element.appendChild( symbol );
+
+					var details = document.createElement( 'div' );
+					details.className = 'details';
+					details.innerHTML = table[ i + 1 ] + '<br>' + table[ i + 2 ];
+					element.appendChild( details );
+
+					var object = new THREE.CSS3DObject( element );
+					object.position.x = Math.random() * 4000 - 2000;
+					object.position.y = Math.random() * 4000 - 2000;
+					object.position.z = Math.random() * 4000 - 2000;
+					scene.add( object );
+					objects.push( object );
+					//
+					var object = new THREE.Object3D();
+					object.position.x = ( table[ i + 3 ] * 140 ) - 1330;
+					object.position.y = - ( table[ i + 4 ] * 180 ) + 990;
+					targets.table.push( object );
+				}
+				// sphere
+				var vector = new THREE.Vector3();
+				var spherical = new THREE.Spherical();
+				for ( var i = 0, l = objects.length; i < l; i ++ ) {
+					var phi = Math.acos( -1 + ( 2 * i ) / l );
+					var theta = Math.sqrt( l * Math.PI ) * phi;
+					var object = new THREE.Object3D();
+					spherical.set( 800, phi, theta );
+					object.position.setFromSpherical( spherical );
+					vector.copy( object.position ).multiplyScalar( 2 );
+					object.lookAt( vector );
+					targets.sphere.push( object );
+				}
+				// helix
+				var vector = new THREE.Vector3();
+				var cylindrical = new THREE.Cylindrical();
+				for ( var i = 0, l = objects.length; i < l; i ++ ) {
+					var theta = i * 0.175 + Math.PI;
+					var y = - ( i * 8 ) + 450;
+					var object = new THREE.Object3D();
+					cylindrical.set( 900, theta, y );
+					object.position.setFromCylindrical( cylindrical );
+					vector.x = object.position.x * 2;
+					vector.y = object.position.y;
+					vector.z = object.position.z * 2;
+					object.lookAt( vector );
+					targets.helix.push( object );
+				}
+				// grid
+				for ( var i = 0; i < objects.length; i ++ ) {
+					var object = new THREE.Object3D();
+					object.position.x = ( ( i % 5 ) * 400 ) - 800;
+					object.position.y = ( - ( Math.floor( i / 5 ) % 5 ) * 400 ) + 800;
+					object.position.z = ( Math.floor( i / 25 ) ) * 1000 - 2000;
+					targets.grid.push( object );
+				}
+				//
+				renderer = new THREE.CSS3DRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.domElement.style.position = 'absolute';
+				document.getElementById( 'container' ).appendChild( renderer.domElement );
+				//
+				controls = new THREE.TrackballControls( camera, renderer.domElement );
+				controls.rotateSpeed = 0.5;
+				controls.minDistance = 500;
+				controls.maxDistance = 6000;
+				controls.addEventListener( 'change', render );
+				var button = document.getElementById( 'table' );
+				button.addEventListener( 'click', function ( event ) {
+					transform( targets.table, 2000 );
+				}, false );
+				var button = document.getElementById( 'sphere' );
+				button.addEventListener( 'click', function ( event ) {
+					transform( targets.sphere, 2000 );
+				}, false );
+				var button = document.getElementById( 'helix' );
+				button.addEventListener( 'click', function ( event ) {
+					transform( targets.helix, 2000 );
+				}, false );
+				var button = document.getElementById( 'grid' );
+				button.addEventListener( 'click', function ( event ) {
+					transform( targets.grid, 2000 );
+				}, false );
+				transform( targets.table, 2000 );
+				//
+				window.addEventListener( 'resize', onWindowResize, false );
+			}
+			function transform( targets, duration ) {
+				TWEEN.removeAll();
+				for ( var i = 0; i < objects.length; i ++ ) {
+					var object = objects[ i ];
+					var target = targets[ i ];
+					new TWEEN.Tween( object.position )
+						.to( { x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+					new TWEEN.Tween( object.rotation )
+						.to( { x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+				}
+				new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
+			}
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				render();
+			}
+			function animate() {
+				requestAnimationFrame( animate );
+				TWEEN.update();
+				controls.update();
+			}
+			function render() {
+				renderer.render( scene, camera );
+			}
+		</script>
+	</body>
+</html>
